@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, ReactNode } from 'react'
 import { SquarePen } from 'lucide-react'
+import { saveImage } from '@/lib/image-store'
 
 export const Editable = ({
   value,
@@ -50,15 +51,20 @@ export const Editable = ({
           type='file'
           accept='image/*'
           className='hidden'
-          onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) {
-              const reader = new FileReader()
-              reader.onload = () => onChange(reader.result as string)
-              reader.readAsDataURL(file)
-            }
-            e.target.value = ''
-          }}
+          // components/editable.tsx — file mode onChange
+            onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                const reader = new FileReader()
+                reader.onload = async () => {
+                    const id = crypto.randomUUID()
+                    await saveImage(id, reader.result as string)
+                    onChange(id) // profile now stores the ID, not the base64 blob
+                }
+                reader.readAsDataURL(file)
+                }
+                e.target.value = ''
+            }}
         />
         {children}
         {hover && (
