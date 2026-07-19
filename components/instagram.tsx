@@ -299,7 +299,7 @@ export const Settings = ({
 }
 
 
-const STORAGE_KEY = 'sugarloaf-profile'
+const STORAGE_KEY = 'grotto-profile'
 
 function loadProfile() {
   if (typeof window === 'undefined') return defaultProfile // SSR guard
