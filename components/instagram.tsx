@@ -200,7 +200,7 @@ export const Highlights = ({
     return (
       <div className='w-full max-w-md p-4 flex flex-row gap-2 items-center justify-between'>
         {activeHighlights.map((highlight: any, i: number) => (
-          <div className='flex flex-col w-fit gap-2 items-center justify-center' key={i}>
+          <div className='flex flex-col gap-2 items-center justify-center' key={i}>
             <Editable
               type='file'
               value={highlight.image}
@@ -210,7 +210,7 @@ export const Highlights = ({
               <img
                 src={highlight.image}
                 alt='highlight'
-                className='w-20 h-20 object-cover rounded-full p-1 border-3 border-gray-300'
+                className='w-20 object-cover rounded-full p-1 border-3 border-gray-300'
               />
             </Editable>
             <Editable
