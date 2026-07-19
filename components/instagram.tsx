@@ -322,7 +322,7 @@ export default function Instagram() {
       dispatch({ type: 'set', field, value })
   
     return (
-    <div className='w-full max-w-md px-4'>
+    <div className='w-full max-w-md px-2'>
         <div className='w-full max-w-md border-[2px] border-neutral-200 rounded-4xl'>
             <Header username={profile.username} onChange={set('username')} />
             <Summary
