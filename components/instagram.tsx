@@ -11,6 +11,7 @@ import { defaultProfile } from '@/lib/profile'
 import { useEffect } from 'react'
 import { useReducer } from 'react'
 import { profileReducer } from '@/lib/profile'
+import { StoredImage } from '@/components/stored-image'
 
 export const Header = ({username, onChange}: {username: string | null | undefined, onChange: (value: string) => void}) => {
     let activeUsername = username ?? 'keeks' 
@@ -105,12 +106,9 @@ export const Summary = ({
         <div className='w-full max-w-md pl-4  pr-6 py-4 '>
             <div className='flex flex-row items-center gap-2 '>
                 
-                <div className={`${ story ? 'bg-orange-600' : 'bg-neutral-200'} w-38 h-auto p-[3px] rounded-full flex flex-col items-center justify-center`}>  
-                    <Editable type='file' value={activeAvatar} onChange={onChangeAvatar} className='rounded-full overflow-hidden'>
-                        <Avatar className='w-28 h-28 p-1 bg-white flex items-center justify-center'>
-                            <AvatarImage src={activeAvatar} className=' bg-white flex items-center justify-center' />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
+                <div className={`${ story ? 'bg-orange-600' : 'bg-neutral-200'} w-32 h-auto p-[3px] rounded-full flex flex-col items-center justify-center`}>  
+                    <Editable type='file' value={activeAvatar} onChange={onChangeAvatar} className='rounded-full overflow-hidden h-28 w-28'>
+                    <StoredImage alt={activeName} src={activeAvatar} className='object-cover bg-white rounded-full p-1 w-full h-28' />
                     </Editable>
                 </div>
 
@@ -198,19 +196,19 @@ export const Highlights = ({
 
   
     return (
-      <div className='w-full max-w-md p-4 flex flex-row gap-2 items-center justify-between'>
+      <div className=' max-w-full p-4 flex flex-row gap-1 items-center justify-between'>
         {activeHighlights.map((highlight: any, i: number) => (
           <div className='flex flex-col gap-2 items-center justify-center' key={i}>
             <Editable
               type='file'
               value={highlight.image}
               onChange={onChange ? (url) => onChange(i, 'image', url) : undefined}
-              className='rounded-full overflow-hidden'
+              className='rounded-full flex items-center justify-center overflow-hidden w-fit h-fit'
             >
-              <img
+              <StoredImage
                 src={highlight.image}
                 alt='highlight'
-                className='w-20 object-cover rounded-full p-1 border-3 border-gray-300'
+                className='w-18 h-18 object-cover rounded-full p-1 border-3 border-gray-300'
               />
             </Editable>
             <Editable
@@ -265,7 +263,7 @@ export const Posts = ({
             onChange={onChange ? (url) => onChange(i, url) : undefined}
             className='w-full h-48 relative block'
           >
-            <img src={post.image} alt='post' className='w-full h-full object-cover' />
+            <StoredImage src={post.image} alt='post' className='w-full h-full object-cover' />
             {post.carousel && (
               <StickyNotes className='w-4 h-4 fill-white text-white absolute top-2 right-2' />
             )}
@@ -322,8 +320,8 @@ export default function Instagram() {
       dispatch({ type: 'set', field, value })
   
     return (
-    <div className='w-full max-w-md px-2'>
-        <div className='w-full max-w-md border-[2px] border-neutral-200 rounded-4xl'>
+    <div className='w-full max-w-md'>
+        <div className='w-full border-[2px] border-neutral-200 rounded-4xl'>
             <Header username={profile.username} onChange={set('username')} />
             <Summary
                 story={profile.story}

@@ -19,6 +19,7 @@ export const Editable = ({
   const [hover, setHover] = useState(false)
   const textRef = useRef<HTMLSpanElement>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     if (editing && textRef.current) {
@@ -51,20 +52,20 @@ export const Editable = ({
           type='file'
           accept='image/*'
           className='hidden'
-          // components/editable.tsx — file mode onChange
-            onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) {
-                const reader = new FileReader()
-                reader.onload = async () => {
-                    const id = crypto.randomUUID()
-                    await saveImage(id, reader.result as string)
-                    onChange(id) // profile now stores the ID, not the base64 blob
-                }
-                reader.readAsDataURL(file)
-                }
-                e.target.value = ''
-            }}
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (!file) return
+            setUploading(true)
+            const reader = new FileReader()
+            reader.onload = async () => {
+              const id = crypto.randomUUID()
+              await saveImage(id, reader.result as string)
+              onChange(id) // profile stores the ID now, not the raw base64
+              setUploading(false)
+            }
+            reader.readAsDataURL(file)
+            e.target.value = ''
+          }}
         />
         {children}
         {hover && (
